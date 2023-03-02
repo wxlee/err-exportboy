@@ -1,0 +1,9 @@
+[Core]
+Name = Exportboy
+Module = exportboy
+
+[Documentation]
+Description = slack chatops bot to create upload / download link
+
+[Python]
+Version = 3
