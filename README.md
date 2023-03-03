@@ -1,9 +1,11 @@
 # err-exportboy
 
 ## Clone this code to errbot plugins path
+```bash
+git clone https://github.com/wxlee/err-exportboy.git
+```
 
-
-## Setup environment for 
+## Setup environment 
 
 FILE: /etc/systemd/system/errbot.service
 
@@ -38,4 +40,30 @@ WantedBy=multi-user.target
 systemctl daemon-reload
 systemctl start errbot.service
 systemctl enable errbot.service
+```
+
+## Setup supervisor (for docker)
+
+FILE:/etc/supervisor/conf.d/errbot.conf
+
+```bash
+[supervisord]
+environment=JENKINS_USER_TOKEN="...",JENKINS_PRJ_TOKEN="...",JENKINS_URL="...:8080"
+[program:errbot]
+command = /home/errbotuser/.venv/bin/errbot --config /home/errbotuser/chatops/config.py
+user = errbotuser
+stdout_logfile = /var/log/supervisor/errbot.log
+stderr_logfile = NONE
+redirect_stderr = true
+directory = /home/errbotuser/chatops
+startsecs = 3
+stopsignal = INT
+environment = LC_ALL="en_US.UTF-8"
+
+```
+
+## Startup service
+```bash
+systemctl enable supervisor
+systemctl restart supervisor
 ```
